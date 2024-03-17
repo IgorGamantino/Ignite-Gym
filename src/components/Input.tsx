@@ -15,6 +15,10 @@ export function Input({...rest}:IInputProps) {
       placeholderTextColor="gray.300"
       fontFamily="body"
        mb={4}
+      _focus={{
+        borderColor:"green.500",
+        borderWidth: 1
+      }}
       {...rest}
 
     />
