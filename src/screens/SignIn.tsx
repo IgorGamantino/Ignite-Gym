@@ -4,6 +4,7 @@ import BackgroundImage from "@assets/background.png"
 
 import LogoImage from "@assets/logo.svg"
 import { Input } from "@components/Input"
+import { Button } from "@components/Button"
 
 export function SignIn() {
   return (
@@ -28,6 +29,8 @@ export function SignIn() {
           placeholder="Senha"
           secureTextEntry
         />
+
+        <Button title="Acesar" />
       </Center>
 
     </VStack>
