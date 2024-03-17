@@ -20,7 +20,7 @@ export function SignIn() {
         </Heading>
 
         <Input placeholder="E-mail"/>
-        <Input placeholder="Password"/>
+        <Input placeholder="Senha"/>
       </Center>
 
     </VStack>

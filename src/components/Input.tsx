@@ -1,8 +1,8 @@
 import { Input as InputNativeBase,IInputProps } from "native-base"
 
-interface InputProps  extends IInputProps {}
 
-export function Input(props:InputProps) {
+
+export function Input({...rest}:IInputProps) {
   return (
     <InputNativeBase
       w="100%"
@@ -12,9 +12,10 @@ export function Input(props:InputProps) {
       borderWidth={0}
       fontSize="md"
       color='white'
+      placeholderTextColor="gray.300"
       fontFamily="body"
        mb={4}
-      {...props}
+      {...rest}
 
     />
   )
