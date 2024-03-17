@@ -33,6 +33,7 @@ export function SignIn() {
         <Button title="Acesar" />
       </Center>
 
+      <Button mt={4} title="Criar conta" variant="outline" />
     </VStack>
   )
 }
