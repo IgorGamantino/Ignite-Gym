@@ -1,5 +1,5 @@
 import { createBottomTabNavigator, BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-
+import { useTheme } from "native-base";
 import { Exercise } from "@screens/Exercise";
 import { History } from "@screens/History";
 import { Home } from "@screens/Home";
@@ -21,17 +21,24 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
+  const {colors} = useTheme()
   return (
-    <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
+    <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false , 
+        
+        tabBarActiveTintColor: colors.green[500],
+        tabBarInactiveTintColor: colors.gray[200]
+        
+        }}>
+     
       <Screen name="home" component={Home} options={{
-        tabBarIcon: () => <HomeLogo width={32} height={32} />,
+        tabBarIcon: ({color}) => <HomeLogo fill={color} width={32} height={32} />,
       }} />
 
       <Screen name="history" component={History} options={{
-        tabBarIcon: () => <HistoryLogo width={32} height={32} />,
+        tabBarIcon: ({color}) => <HistoryLogo fill={color} width={32} height={32} />,
       }} />
       <Screen name="profile" component={Profile} options={{
-        tabBarIcon: () => <ProfileLogo width={32} height={32} />,
+        tabBarIcon: ({color}) => <ProfileLogo fill={color} width={32} height={32} />,
       }} />
       <Screen name="exercise" component={Exercise} />
     </Navigator>
