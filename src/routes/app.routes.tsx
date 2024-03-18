@@ -23,6 +23,7 @@ const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
   const {sizes,colors} = useTheme()
+  const iconSizes = sizes[6]
   return (
     <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false , 
         
@@ -39,14 +40,14 @@ export function AppRoutes() {
         }}>
      
       <Screen name="home" component={Home} options={{
-        tabBarIcon: ({color}) => <HomeLogo fill={color} width={32} height={32} />,
+        tabBarIcon: ({color}) => <HomeLogo fill={color} width={iconSizes} height={iconSizes} />,
       }} />
 
       <Screen name="history" component={History} options={{
-        tabBarIcon: ({color}) => <HistoryLogo fill={color} width={32} height={32} />,
+        tabBarIcon: ({color}) => <HistoryLogo fill={color} width={iconSizes} height={iconSizes} />,
       }} />
       <Screen name="profile" component={Profile} options={{
-        tabBarIcon: ({color}) => <ProfileLogo fill={color} width={32} height={32} />,
+        tabBarIcon: ({color}) => <ProfileLogo fill={color} width={iconSizes} height={iconSizes} />,
       }} />
       <Screen name="exercise" component={Exercise} options={{
         tabBarButton: () => null,
