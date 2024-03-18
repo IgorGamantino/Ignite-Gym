@@ -2,7 +2,7 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 import { Loading } from '@components/Loading';
 import { NativeBaseProverUi } from 'src/theme';
 import { Center } from 'native-base';
-import { SignIn } from '@screens/SignIn';
+import { SignUp } from '@screens/SignUp';
 import { StatusBar } from 'react-native';
 
 
@@ -24,7 +24,7 @@ export default function App() {
       backgroundColor="transparent"
       translucent
       />
-        <SignIn />
+        <SignUp />
     </NativeBaseProverUi>
   );
 }
