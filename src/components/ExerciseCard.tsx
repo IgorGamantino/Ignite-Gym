@@ -17,7 +17,7 @@ export function ExerciseCard({title,...rest}:ExerciseCardProps) {
         w={67}
         h={67}
         mr={4}
-        resizeMode="center"
+        resizeMode="cover"
         rounded="md"
         source={{uri: "https://i.ytimg.com/vi/mv0mkX8hz5I/maxresdefault.jpg"}} 
         alt="puxada frontal"/> 
@@ -32,7 +32,7 @@ export function ExerciseCard({title,...rest}:ExerciseCardProps) {
         as={Entypo}
         h={24}
         w={24}
-        name="chevron-thin-right"
+        name="chevron-small-right"
         color="gray.300"
         
         />
