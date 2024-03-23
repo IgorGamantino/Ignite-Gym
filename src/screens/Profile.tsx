@@ -6,9 +6,29 @@ import { UserPhoto } from "@components/UserPhoto";
 import { TouchableOpacity } from "react-native";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+import * as ImagePicker from 'expo-image-picker';
 
 export function Profile() {
   const [isLoadingImage, setIsLoadingImage] = useState(false)
+  
+  const [image, setImage] = useState<null | string>(null);
+
+  const handleUserPhotoSelect = async () => {
+    setIsLoadingImage(true)
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setIsLoadingImage(false)
+      setImage(result.assets[0].uri);
+    }
+  };
 
 
   return (
@@ -26,14 +46,14 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: "https://avatars.githubusercontent.com/u/65914646?v=4" }}
+              source={{ uri: image }}
               size={33}
               alt="user-profile" />
           )
           }
 
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleUserPhotoSelect}>
             <Text color='green.500' fontWeight="bold" fontSize="md" mb={8}>Alterar foto</Text>
           </TouchableOpacity>
 
