@@ -16,7 +16,10 @@ import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 const signUpSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
   email: yup.string().required("E-mail é obrigatório").email("Digite um email valido"),
-  password: yup.string().required("Senha é obrigatório")
+  password: yup.string().required("Senha é obrigatório"),
+  password_confirmed: yup.string()
+  .oneOf([yup.ref("password")], "Passwords must match")
+  .required("Required"),
 })
 
 
@@ -75,6 +78,14 @@ export function SignUp() {
           error={errors.password?.message}
           name="password"
           placeholder="Senha"
+          secureTextEntry
+        />
+        <Input
+          mt={4}
+          control={control}
+          error={errors.password_confirmed?.message}
+          name="password_confirmed"
+          placeholder="Confirme sua senha"
           secureTextEntry
         />
 
