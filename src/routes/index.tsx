@@ -9,7 +9,7 @@ export function Routes () {
     // adicionar essa box por volta do navigationContainer evitar aqueles bugs de tela branca, em um carregamento
     <Box flex={1} bg="gray.700">
     <NavigationContainer>
-      <AppRoutes />
+      <AuthRoutes />
     </NavigationContainer>
     </Box>
   )

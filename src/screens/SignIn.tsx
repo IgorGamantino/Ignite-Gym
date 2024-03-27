@@ -1,14 +1,40 @@
 import { VStack, Text, Center, Heading, Image,ScrollView } from "native-base"
 import { useNavigation } from "@react-navigation/native"
-import BackgroundImage from "@assets/background.png"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm } from "react-hook-form";
+import * as yup from "yup"
+
+import BackgroundImage from "@assets/background.png";
+
 
 import LogoImage from "@assets/logo.svg"
 import { Input } from "@components/Input"
 import { Button } from "@components/Button"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 
+const signInSchema = yup.object({
+  email: yup.string().required("Digite seu email").email("Digite um email valido"),
+  password: yup.string().required("Digite sua senha")
+})
+
+
+type DataForm = {
+  email: string;
+  password: string;
+}
 
 export function SignIn() {
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DataForm>({
+    resolver: yupResolver(signInSchema)
+  })
+
+  const onSubmit = (data) => console.log(data)
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
   function handleNavigationSignUp () {
@@ -30,16 +56,25 @@ export function SignIn() {
         </Heading>
 
         <Input
+          
+          control={control}
+          name="email"
           placeholder="E-mail"
           keyboardType="email-address"
           autoCapitalize="none"
+          error={errors.email?.message}
         />
         <Input
+          mt={4}
+          
+          control={control}
+          name="password"
           placeholder="Senha"
           secureTextEntry
+          error={errors.password?.message}
         />
 
-        <Button title="Acesar" />
+        <Button mt={4} title="Acesar" onPress={handleSubmit(onSubmit)} />
       </Center>
 
       <Center mt={24}>

@@ -1,21 +1,43 @@
 import { VStack, Text, Center, Heading, Image,ScrollView } from "native-base"
+import { useNavigation } from "@react-navigation/native"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm } from "react-hook-form"
 
 import BackgroundImage from "@assets/background.png"
-
 import LogoImage from "@assets/logo.svg"
+
 import { Input } from "@components/Input"
 import { Button } from "@components/Button"
-import { useNavigation } from "@react-navigation/native"
+
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
+
+
+const signUpSchema = yup.object({
+  name: yup.string().required("Nome é obrigatório"),
+  email: yup.string().required("E-mail é obrigatório").email("Digite um email valido"),
+  password: yup.string().required("Senha é obrigatório")
+})
+
 
 export function SignUp() {
 
-
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver:yupResolver(signUpSchema)
+  })
+  const onSubmit = (data) => console.log(data)
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
   function handleNavigationSignIn () {
     navigation.navigate("signIn")
   }
+
+
+ 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
     <VStack flex={1} bg="gray.700" px={10}>
@@ -31,21 +53,32 @@ export function SignUp() {
         </Heading>
 
         <Input
+          name="name"
+          error={errors.name?.message}
+          control={control}
           placeholder="Nome"
           keyboardType="default"
         />
 
         <Input
+          mt={4}
+          control={control}
+          name="email"
+          error={errors.email?.message}
           placeholder="E-mail"
           keyboardType="email-address"
           autoCapitalize="none"
         />
         <Input
+          mt={4}
+          control={control}
+          error={errors.password?.message}
+          name="password"
           placeholder="Senha"
           secureTextEntry
         />
 
-        <Button title="Criar e acessar" />
+        <Button mt={4} title="Criar e acessar" onPress={handleSubmit(onSubmit)}/>
       </Center>
 
       <Center mt={24}>
