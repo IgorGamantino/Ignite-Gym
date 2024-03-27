@@ -18,8 +18,8 @@ const signUpSchema = yup.object({
   email: yup.string().required("E-mail é obrigatório").email("Digite um email valido"),
   password: yup.string().required("Senha é obrigatório"),
   password_confirmed: yup.string()
-  .oneOf([yup.ref("password")], "Passwords must match")
-  .required("Required"),
+  .oneOf([yup.ref("password")], "A senhas devem ser iguais")
+  .required("Confirmação da senha é obrigatório"),
 })
 
 
