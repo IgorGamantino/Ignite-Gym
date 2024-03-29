@@ -4,6 +4,7 @@ import { NativeBaseProverUi } from 'src/theme';
 
 import { StatusBar } from 'react-native';
 import { Routes } from '@routes/index';
+import { AuthContextProvider } from '@contexts/AuthContext';
 
 
 export default function App() {
@@ -20,11 +21,13 @@ export default function App() {
 
   return (
     <NativeBaseProverUi>
+      <AuthContextProvider>
       <StatusBar
       backgroundColor="transparent"
       translucent
       />
         <Routes />
+        </AuthContextProvider>
     </NativeBaseProverUi>
   );
 }
