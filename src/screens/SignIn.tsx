@@ -11,6 +11,9 @@ import LogoImage from "@assets/logo.svg"
 import { Input } from "@components/Input"
 import { Button } from "@components/Button"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
+import { api } from "@services/api";
+import { useState } from "react";
+import { AxiosError } from "axios";
 
 const signInSchema = yup.object({
   email: yup.string().required("Digite seu email").email("Digite um email valido"),
@@ -24,6 +27,7 @@ type DataForm = {
 }
 
 export function SignIn() {
+  const [isLoadingFetch, setIsLoadingFetch]= useState(false)
 
   const {
     control,
@@ -33,7 +37,23 @@ export function SignIn() {
     resolver: yupResolver(signInSchema)
   })
 
-  const onSubmit = (data) => console.log(data)
+  const handleSignIn = async ({email,password}:DataForm) => {
+    setIsLoadingFetch(true)
+   try {
+    const response =  await api.post('/sessions', {
+      email,
+      password
+     })
+
+
+     setIsLoadingFetch(false)
+     console.log(response.data)
+
+   } catch (error) {
+      setIsLoadingFetch(false)
+      console.log(error)
+   }
+  }
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -74,7 +94,7 @@ export function SignIn() {
           error={errors.password?.message}
         />
 
-        <Button mt={4} title="Acesar" onPress={handleSubmit(onSubmit)} />
+        <Button mt={4} title="Acesar" onPress={handleSubmit(handleSignIn)} isLoading={isLoadingFetch}/>
       </Center>
 
       <Center mt={24}>

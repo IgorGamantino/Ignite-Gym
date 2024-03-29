@@ -1,4 +1,4 @@
-import { VStack, Text, Center, Heading, Image,ScrollView } from "native-base"
+import { VStack, Text, Center, Heading, Image,ScrollView ,useToast} from "native-base"
 import { useNavigation } from "@react-navigation/native"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -11,7 +11,14 @@ import { Input } from "@components/Input"
 import { Button } from "@components/Button"
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
+import { api } from "@services/api"
+import { useState } from "react"
 
+type SignUpFormData = {
+  name: string
+  email: string;
+  password: string;
+}
 
 const signUpSchema = yup.object({
   name: yup.string().required("Nome é obrigatório"),
@@ -24,7 +31,8 @@ const signUpSchema = yup.object({
 
 
 export function SignUp() {
-
+  const toast = useToast()
+  const [isLoadingFetch, setIsLoadingFetch]= useState(false)
   const {
     control,
     handleSubmit,
@@ -32,11 +40,35 @@ export function SignUp() {
   } = useForm({
     resolver:yupResolver(signUpSchema)
   })
-  const onSubmit = (data) => console.log(data)
+
+  const handleSignUp = async({name, email,password}:SignUpFormData) => {
+    setIsLoadingFetch(true)
+    try {
+       await api.post("/users",{
+          name,
+          email,
+          password
+        })
+
+      setIsLoadingFetch(false)
+      navigation.goBack()
+
+    } catch (error) {
+      setIsLoadingFetch(false)
+      console.log(error)
+      toast.show({
+        description:"Erro ao criar seu usuário!",
+        placement: "top-right"
+      })
+    }
+ 
+
+
+  }
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
   function handleNavigationSignIn () {
-    navigation.navigate("signIn")
+    navigation.goBack()
   }
 
 
@@ -89,7 +121,7 @@ export function SignUp() {
           secureTextEntry
         />
 
-        <Button mt={4} title="Criar e acessar" onPress={handleSubmit(onSubmit)}/>
+        <Button mt={4} title="Criar e acessar" onPress={handleSubmit(handleSignUp)} isLoading={isLoadingFetch}/>
       </Center>
 
       <Center mt={24}>
