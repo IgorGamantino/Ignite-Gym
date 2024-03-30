@@ -1,11 +1,18 @@
 import { NavigationContainer } from "@react-navigation/native";
+
+import * as SplashScreen from 'expo-splash-screen';
 import { AuthRoutes } from "./auth.routes";
 import { Box } from "native-base";
 import { AppRoutes } from "./app.routes";
 import { useAuth } from "@hooks/useAuth";
 
 export function Routes () {
-  const {userData} = useAuth();
+  const {userData, userLoadingData} = useAuth();
+ 
+
+  if(!userLoadingData){
+    SplashScreen.hideAsync();
+  }
   
   return (
 

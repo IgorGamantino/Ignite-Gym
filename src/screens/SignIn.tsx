@@ -28,7 +28,7 @@ type DataForm = {
 
 export function SignIn() {
   const [isLoadingFetch, setIsLoadingFetch]= useState(false);
-  const {setUserData} = useAuth();
+  const {signIn} = useAuth();
 
   const {
     control,
@@ -41,19 +41,13 @@ export function SignIn() {
   const handleSignIn = async ({email,password}:DataForm) => {
     setIsLoadingFetch(true)
    try {
-    const response =  await api.post('/sessions', {
-      email,
-      password
-     });
-
-     setIsLoadingFetch(false)
-     setUserData(response.data)
-
+      signIn(email,password)
    } catch (error) {
-      setIsLoadingFetch(false)
       console.log(error)
+   } finally{
+     setIsLoadingFetch(false)
    }
-  }
+  };
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 

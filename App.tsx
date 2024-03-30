@@ -1,10 +1,15 @@
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
+import * as SplashScreen from 'expo-splash-screen';
+
 import { NativeBaseProverUi } from 'src/theme';
 
 import { StatusBar } from 'react-native';
 import { Routes } from '@routes/index';
 import { AuthContextProvider } from '@contexts/AuthContext';
+
+SplashScreen.preventAutoHideAsync();
+
 
 
 export default function App() {
