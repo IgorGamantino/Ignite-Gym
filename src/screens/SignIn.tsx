@@ -39,9 +39,10 @@ export function SignIn() {
   })
 
   const handleSignIn = async ({email,password}:DataForm) => {
+ 
     setIsLoadingFetch(true)
    try {
-      signIn(email,password)
+     await signIn(email,password)
    } catch (error) {
       console.log(error)
    } finally{

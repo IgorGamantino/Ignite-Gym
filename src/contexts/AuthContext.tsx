@@ -1,7 +1,7 @@
 import { UserDTO } from "@dtos/UserDTO";
 import { api } from "@services/api";
-
-import { storageUserSave, getStorageUser } from "@storage/storageUser";
+import { storageUserTokenSave } from "@storage/storageAuthToken";
+import { storageUserSave, getStorageUser} from "@storage/storageUser";
 import { ReactNode, createContext, useEffect, useState } from "react";
 
 
@@ -24,13 +24,13 @@ export const AuthContextProvider = ({children}:{children:ReactNode}) => {
                 email,
                 password
                });
-            
-               if(data.user){
+
+               if(data.user && data.token){
+                storageUserTokenSave(data.token)
                 setUserData(data.user);
                 storageUserSave(data.user)
-               }
 
-           
+         }
         } catch (error) {
             throw error;
         }
