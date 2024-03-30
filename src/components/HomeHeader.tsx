@@ -3,22 +3,34 @@ import { MaterialIcons } from "@expo/vector-icons"
 
 import { UserPhoto } from "./UserPhoto";
 import { TouchableOpacity } from "react-native";
+import { useAuth } from "@hooks/useAuth";
+
+import userAvatar from '@assets/userPhotoDefault.png'
+import { clearStorageUserData } from "@storage/storageUser";
 
 export function HomeHeader() {
+  const {userData,setUserData} = useAuth();
+
+
+  async function handleSignOut () {
+     setUserData(null);
+     await  clearStorageUserData()
+  }
+
   return (
     <HStack bg="gray.600" pt={16} pb={5} px={8} alignItems="center">
       <UserPhoto
         mr={4}
         size={16}
-        source={{ uri: "https://avatars.githubusercontent.com/u/65914646?v=4" }}
+        source={userData?.avatar ? { uri: "https://avatars.githubusercontent.com/u/65914646?v=4" } : userAvatar}
         alt="image-user" />
       <VStack flex={1}>
         <Text color="gray.100" fontSize="md">Ola</Text>
 
-        <Heading color="gray.100" fontSize="md">Igor</Heading>
+        <Heading color="gray.100" fontSize="md">{userData?.name}</Heading>
       </VStack>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleSignOut}>
         <Icon
           as={MaterialIcons}
           name="logout"

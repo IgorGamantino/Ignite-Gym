@@ -20,3 +20,6 @@ return user;
 
 }
 
+export async function clearStorageUserData(){
+    await AsyncStorage.removeItem(USER_STORAGE)
+}
