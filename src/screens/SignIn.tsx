@@ -12,9 +12,8 @@ import { Input } from "@components/Input"
 import { Button } from "@components/Button"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { api } from "@services/api";
-import { useContext, useState } from "react";
-import { AxiosError } from "axios";
-import { AuthContext } from "@contexts/AuthContext";
+import { useState } from "react";
+import { useAuth } from "@hooks/useAuth";
 
 const signInSchema = yup.object({
   email: yup.string().required("Digite seu email").email("Digite um email valido"),
@@ -29,7 +28,7 @@ type DataForm = {
 
 export function SignIn() {
   const [isLoadingFetch, setIsLoadingFetch]= useState(false);
-  const {setUserData} = useContext(AuthContext);
+  const {setUserData} = useAuth();
 
   const {
     control,
@@ -46,7 +45,7 @@ export function SignIn() {
       email,
       password
      });
-     
+
      setIsLoadingFetch(false)
      setUserData(response.data)
 

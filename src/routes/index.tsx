@@ -2,11 +2,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthRoutes } from "./auth.routes";
 import { Box } from "native-base";
 import { AppRoutes } from "./app.routes";
-import { useContext } from "react";
-import { AuthContext } from "@contexts/AuthContext";
+import { useAuth } from "@hooks/useAuth";
 
 export function Routes () {
-  const {userData} = useContext(AuthContext);
+  const {userData} = useAuth();
+  
   return (
 
     // adicionar essa box por volta do navigationContainer evitar aqueles bugs de tela branca, em um carregamento
