@@ -101,7 +101,7 @@ console.log(listExercises)
           data={listExercises}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{paddingBottom: 20}}
-          renderItem={(props) => <ExerciseCard title={props.item.name} image={props.item.thumb} onPress={handleOpenExerciseDetails} /> }
+          renderItem={(props) => <ExerciseCard repetition={props.item.repetitions} serie={props.item.series} title={props.item.name} image={props.item.thumb} onPress={handleOpenExerciseDetails} /> }
         />
       </VStack>
     </VStack>

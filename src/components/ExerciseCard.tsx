@@ -2,13 +2,16 @@ import { HStack, Heading, Image, Text, VStack, Icon } from "native-base";
 import { TouchableOpacity,TouchableOpacityProps } from "react-native";
 
 import { Entypo} from "@expo/vector-icons"
+import { api } from "@services/api";
 interface ExerciseCardProps extends TouchableOpacityProps{ 
   title:string
   image?: string;
+  serie: number;
+  repetition: number
 }
 
 
-export function ExerciseCard({title,image,...rest}:ExerciseCardProps) {
+export function ExerciseCard({title,image,serie,repetition,...rest}:ExerciseCardProps) {
 
 
   return (
@@ -20,12 +23,12 @@ export function ExerciseCard({title,image,...rest}:ExerciseCardProps) {
         mr={4}
         resizeMode="cover"
         rounded="md"
-        source={image ? {uri: image} :  {uri: "https://i.ytimg.com/vi/mv0mkX8hz5I/maxresdefault.jpg"}} 
+        source={image ? {uri: `${api.defaults.baseURL}/exercise/thumb/${image}`} :  {uri: "https://i.ytimg.com/vi/mv0mkX8hz5I/maxresdefault.jpg"}} 
         alt="puxada frontal"/> 
 
         <VStack flex={1}>
           <Heading  color="white" fontSize="lg">{title}</Heading>
-          <Text fontSize="sm" color="gray.200" mt={1} numberOfLines={2}>Puxar com um peso ideal</Text>
+          <Text fontSize="sm" color="gray.200" mt={1} numberOfLines={2}>{serie} séries x {repetition} repetições</Text>
 
         </VStack>
 
