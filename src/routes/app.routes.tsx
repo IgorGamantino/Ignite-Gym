@@ -12,7 +12,9 @@ import ProfileLogo from "@assets/profile.svg"
 
 type AppRoutes = {
   home: undefined;
-  exercise: undefined;
+  exercise: {
+    id: number
+  };
   history: undefined;
   profile: undefined;
 };

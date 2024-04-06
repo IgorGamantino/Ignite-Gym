@@ -6,6 +6,7 @@ import { Center, FlatList, HStack, Heading, Text, VStack, useToast } from "nativ
 import { useCallback, useEffect, useState } from "react";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 import { api } from "@services/api";
+import { Loading } from "@components/Loading";
 
 type ListExercisesProps = {
    id: number;
@@ -65,8 +66,10 @@ console.log(listExercises)
   getExercisesByGroup();
  }, [groupSelected]))
 
-  function handleOpenExerciseDetails() {
-    navigation.navigate("exercise")
+  function handleOpenExerciseDetails(id:number) {
+    navigation.navigate("exercise", {
+      id
+    })
   }
 
 
@@ -96,13 +99,17 @@ console.log(listExercises)
           <Text color="gray.200" fontSize="sm">4</Text>
         </HStack>
 
-        <FlatList
-          keyExtractor={(item) => item.id.toString()}
-          data={listExercises}
-          showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{paddingBottom: 20}}
-          renderItem={(props) => <ExerciseCard repetition={props.item.repetitions} serie={props.item.series} title={props.item.name} image={props.item.thumb} onPress={handleOpenExerciseDetails} /> }
-        />
+        {
+          listExercises.length <= 0 ? <Loading /> : (
+            <FlatList
+              keyExtractor={(item) => item.id.toString()}
+              data={listExercises}
+              showsVerticalScrollIndicator={false}
+              _contentContainerStyle={{paddingBottom: 20}}
+             renderItem={(props) => <ExerciseCard repetition={props.item.repetitions} serie={props.item.series} title={props.item.name} image={props.item.thumb} onPress={() => handleOpenExerciseDetails(props.item.id)} /> }
+               />
+          )
+        }
       </VStack>
     </VStack>
   )
