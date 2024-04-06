@@ -5,23 +5,6 @@ import { VStack, Text, HStack, Heading, SectionList, useToast } from "native-bas
 import React, { useEffect, useState } from "react";
 
 
-const DATA = [
-  {
-    title: '02.03.2024',
-    data: ['Costa', 'Ombro'],
-  },
-  {
-    title: '02.03.2024',
-    data: ['Costa', 'Ombro'],
-  },
-  {
-    title: '02.03.2024',
-    data: ['Costa', 'Ombro'],
-  },
-];
-
-
-
 type ExerciseProps = {
     id: string;
     name: string;
@@ -50,7 +33,9 @@ useEffect(() => {
     try {
       const response = await api.get('/history');
 
-      setListExercise(response.data)
+      if(response.data){
+        setListExercise(response.data)
+      }
     } catch (error) {
       console.log(error)
       toast.show({

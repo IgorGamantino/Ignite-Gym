@@ -1,7 +1,7 @@
 import { UserDTO } from "@dtos/UserDTO";
 import { api } from "@services/api";
 import { storageUserTokenSave } from "@storage/storageAuthToken";
-import { storageUserSave, getStorageUser} from "@storage/storageUser";
+import { storageUserSave, getStorageUser, clearStorageUserData} from "@storage/storageUser";
 import { ReactNode, createContext, useEffect, useState } from "react";
 
 
@@ -10,6 +10,7 @@ type DataContext = {
     setUserData:  React.Dispatch<React.SetStateAction<UserDTO | null>>;
     signIn: (email: string, password: string) =>  Promise<void>;
     userLoadingData: boolean;
+    logout: () => void;
 }
 
 export const AuthContext = createContext({} as DataContext);
@@ -25,8 +26,8 @@ export const AuthContextProvider = ({children}:{children:ReactNode}) => {
                 password
                });
 
-               if(data.user && data.token){
-                storageUserTokenSave(data.token)
+               if(data.user && data.token && data.refresh_token){
+                storageUserTokenSave(data.token, data.refresh_token)
 
                 api.defaults.headers.common.Authorization = `Bearer ${data.token}`
                 setUserData(data.user);
@@ -37,6 +38,13 @@ export const AuthContextProvider = ({children}:{children:ReactNode}) => {
             throw error;
         }
         
+    }
+
+
+
+    async function logout(){
+        setUserData(null);
+        clearStorageUserData();
     }
 
 
@@ -53,11 +61,17 @@ export const AuthContextProvider = ({children}:{children:ReactNode}) => {
     }, [])
 
 
+  useEffect(() => {
+      const instance =  api.registerInterceptTokenManager(logout);
+      return () => {
+       instance();
+     };
+    },[logout])
     
 
 
     return (
-        <AuthContext.Provider value={{ userData ,setUserData , signIn,userLoadingData}}>
+        <AuthContext.Provider value={{ userData ,setUserData , signIn,userLoadingData, logout}}>
             {children}
         </AuthContext.Provider>
     )
