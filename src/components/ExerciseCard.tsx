@@ -4,10 +4,11 @@ import { TouchableOpacity,TouchableOpacityProps } from "react-native";
 import { Entypo} from "@expo/vector-icons"
 interface ExerciseCardProps extends TouchableOpacityProps{ 
   title:string
+  image?: string;
 }
 
 
-export function ExerciseCard({title,...rest}:ExerciseCardProps) {
+export function ExerciseCard({title,image,...rest}:ExerciseCardProps) {
 
 
   return (
@@ -19,7 +20,7 @@ export function ExerciseCard({title,...rest}:ExerciseCardProps) {
         mr={4}
         resizeMode="cover"
         rounded="md"
-        source={{uri: "https://i.ytimg.com/vi/mv0mkX8hz5I/maxresdefault.jpg"}} 
+        source={image ? {uri: image} :  {uri: "https://i.ytimg.com/vi/mv0mkX8hz5I/maxresdefault.jpg"}} 
         alt="puxada frontal"/> 
 
         <VStack flex={1}>
