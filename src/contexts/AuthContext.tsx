@@ -27,6 +27,8 @@ export const AuthContextProvider = ({children}:{children:ReactNode}) => {
 
                if(data.user && data.token){
                 storageUserTokenSave(data.token)
+
+                api.defaults.headers.common.Authorization = `Bearer ${data.token}`
                 setUserData(data.user);
                 storageUserSave(data.user)
 

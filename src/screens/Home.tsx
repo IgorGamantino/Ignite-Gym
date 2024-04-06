@@ -23,7 +23,6 @@ export function Home() {
   const toast = useToast()
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-console.log(listExercises)
   useEffect(() => {
     async function getExercisesGroup() {
       try {
@@ -73,7 +72,6 @@ console.log(listExercises)
   }
 
 
-  console.log(listExercises)
   return (
     <VStack flex={1} bg="gray.700">
       <HomeHeader />

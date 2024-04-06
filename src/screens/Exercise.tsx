@@ -69,7 +69,14 @@ async function handleExerciseHistoryRegister( ) {
     setIsLoadingSendRegister(true)
   try {
      await api.post(`/history`,{exercise_id: id});
+
+     toast.show({
+      title: 'Exercício registrado com sucesso !',
+      placement: 'top-right',
+      bgColor: 'green.600'
+    })
   } catch (error) {
+    console.log(error)
     toast.show({
       title: 'Erro ao registar o exercício!',
       placement: 'top-right',
@@ -79,11 +86,7 @@ async function handleExerciseHistoryRegister( ) {
   finally {
     setIsLoadingSendRegister(false);
 
-    toast.show({
-      title: 'Exercício registrado com sucesso !',
-      placement: 'top-right',
-      bgColor: 'green.600'
-    })
+    
   }
 }
 
