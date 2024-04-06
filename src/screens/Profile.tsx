@@ -1,6 +1,5 @@
 import { Center, Heading, ScrollView, Skeleton, Text, VStack, useToast } from "native-base";
-import { useState } from "react";
-
+import { useRef, useState } from "react";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
 import { TouchableOpacity } from "react-native";
@@ -9,10 +8,11 @@ import { Button } from "@components/Button";
 import * as ImagePicker from 'expo-image-picker';
 import { useForm } from "react-hook-form";
 import { useAuth } from "@hooks/useAuth";
+import userAvatar from '@assets/userPhotoDefault.png'
 import { api } from "@services/api";
 import { UserDTO } from "@dtos/UserDTO";
 import { storageUserSave } from "@storage/storageUser";
-
+import mime from "mime";
 type DataForm = {
   email: string;
   name: string;
@@ -37,43 +37,91 @@ export function Profile() {
 
   const handleUserPhotoSelect = async () => {
     setIsLoadingImage(true)
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const photoSelected = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
+    
 
-    if (!result.canceled) {
+    if (!photoSelected.canceled) {
       setIsLoadingImage(false)
-      setImage(result.assets[0].uri);
+      setImage(photoSelected.assets[0].uri);
     }
+
+   if(photoSelected.assets){
+    const fileExtension  = photoSelected?.assets[0].uri.split('.').pop();
+
+    const photoFile = {
+    name: `${userData?.name}.${fileExtension}`.toLowerCase(),
+    uri: photoSelected?.assets[0].uri,
+    type: mime.getType(`${photoSelected.assets[0].uri}`)
+    } as any;
+    
+    const uploadPhoto = new FormData();
+    uploadPhoto.append('avatar', photoFile)
+
+
+    try {
+      const avatarResponse = await api.patch('/users/avatar', uploadPhoto, {
+        headers: {
+           accept: 'application/json',
+          'Content-Type':'multipart/form-data'
+        },
+      })
+
+      toast.show({
+        title: 'Image alterada com sucesso !',
+        placement: 'top-right',
+        bgColor: 'green.600'
+      })
+
+      if(userData){
+        const useAvatar = userData 
+
+        useAvatar.avatar = avatarResponse.data.avatar;
+
+
+        await storageUserSave(useAvatar);
+        setUserData(useAvatar);
+        await api.put(`/users`,useAvatar);
+
+      }
+
+     
+    }
+     catch (error) {
+      toast.show({
+        title: 'Erro ao alterar Imagem!',
+        placement: 'top-right',
+        bgColor: 'red.500'
+      })
+    }
+   }
+
+  
   };
 
-  const handleUpdateUserData = async (data:UserDTO) => {
+  const handleUpdateUserData = async (data) => {
     try {
       const userDataUpdate= data
       userDataUpdate.name = data.name
 
-     await storageUserSave(userDataUpdate);
+      await storageUserSave(userDataUpdate);
       setUserData(userDataUpdate);
-     await api.put(`/users`,data);
-
-
-
-     
+      await api.put(`/users`,data);
 
      toast.show({
-      title: 'Exercício registrado com sucesso !',
+      title: 'Dados alterado com sucesso!',
       placement: 'top-right',
       bgColor: 'green.600'
     })
 
     } catch (error) {
       toast.show({
-        title: 'Erro carregar histórico de exercícios',
+        title: 'Erro ao alterar seus dados!',
         placement: 'top-right',
         bgColor: 'red.500'
       })
@@ -96,7 +144,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: image }}
+              source={userData?.avatar ?{uri: `${api.defaults.baseURL}/avatar/${userData.avatar}`} : userAvatar}
               size={33}
               alt="user-profile" />
           )

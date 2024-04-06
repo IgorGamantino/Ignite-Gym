@@ -7,6 +7,7 @@ import { useAuth } from "@hooks/useAuth";
 
 import userAvatar from '@assets/userPhotoDefault.png'
 import { clearStorageUserData } from "@storage/storageUser";
+import { api } from "@services/api";
 
 export function HomeHeader() {
   const {userData,setUserData} = useAuth();
@@ -17,12 +18,15 @@ export function HomeHeader() {
      await  clearStorageUserData()
   }
 
+
+  console.log(userData?.avatar)
+
   return (
     <HStack bg="gray.600" pt={16} pb={5} px={8} alignItems="center">
       <UserPhoto
         mr={4}
         size={16}
-        source={userData?.avatar ? { uri: "https://avatars.githubusercontent.com/u/65914646?v=4" } : userAvatar}
+        source={userData?.avatar ? {uri: `${api.defaults.baseURL}/avatar/${userData.avatar}`}: userAvatar}
         alt="image-user" />
       <VStack flex={1}>
         <Text color="gray.100" fontSize="md">Ola</Text>
